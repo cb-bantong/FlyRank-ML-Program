@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 260" width="100%" height="auto" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <text x="30" y="35" font-size="18" font-weight="bold" fill="#1e293b">Action Playbook Queue Distribution (N=22,006)</text>
+  <text x="30" y="55" font-size="12" fill="#64748b">Breakdown of operational recommendations for content triage</text>
+
+  <!-- Monitor (68.4%), Rewrite Title (13.8%), Engagement Review (12.6%), Snippet Intent (5.2%) -->
+  <!-- Horizontal stacked bar -->
+  <rect x="50" y="85" width="376" height="36" rx="4" fill="#94a3b8"/>
+  <rect x="428" y="85" width="76" height="36" rx="0" fill="#2563eb"/>
+  <rect x="506" y="85" width="69" height="36" rx="0" fill="#0d9488"/>
+  <rect x="577" y="85" width="28" height="36" rx="4" fill="#f59e0b"/>
+
+  <!-- Legend & labels -->
+  <!-- 1. Monitor -->
+  <circle cx="60" cy="155" r="7" fill="#94a3b8"/>
+  <text x="75" y="159" font-size="12" font-weight="bold" fill="#334155">Monitor Visibility</text>
+  <text x="75" y="176" font-size="11" fill="#64748b">15,059 URLs (68.4%) — Steady baseline, passive tracking</text>
+
+  <!-- 2. Rewrite Title & Meta -->
+  <circle cx="60" cy="205" r="7" fill="#2563eb"/>
+  <text x="75" y="209" font-size="12" font-weight="bold" fill="#2563eb">Rewrite Title &amp; Meta</text>
+  <text x="75" y="226" font-size="11" fill="#64748b">3,037 URLs (13.8%) — Page 1 visibility with severe click leak</text>
+
+  <!-- 3. On-Page Engagement Review -->
+  <circle cx="370" cy="155" r="7" fill="#0d9488"/>
+  <text x="385" y="159" font-size="12" font-weight="bold" fill="#0d9488">Engagement Review</text>
+  <text x="385" y="176" font-size="11" fill="#64748b">2,775 URLs (12.6%) — Low scroll / session read rate</text>
+
+  <!-- 4. Improve SERP Snippet Intent -->
+  <circle cx="370" cy="205" r="7" fill="#f59e0b"/>
+  <text x="385" y="209" font-size="12" font-weight="bold" fill="#d97706">Improve Snippet Intent</text>
+  <text x="385" y="226" font-size="11" fill="#64748b">1,135 URLs (5.2%) — Striking distance (pos 11–20) push</text>
+</svg>

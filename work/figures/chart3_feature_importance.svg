@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 280" width="100%" height="auto" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <text x="30" y="35" font-size="18" font-weight="bold" fill="#1e293b">Random Forest Feature Importance Breakdown</text>
+  <text x="30" y="55" font-size="12" fill="#64748b">Relative Gini importance of top predictors in the opportunity model</text>
+
+  <!-- Bars: avg_position (28.4%), log_impressions (22.1%), log_clicks (14.6%), days_active_pct (11.2%), content_age_days (8.2%), position_gap (6.5%) -->
+  <!-- Bar 1 -->
+  <text x="180" y="92" font-size="12" font-weight="600" fill="#334155" text-anchor="end">avg_position</text>
+  <rect x="195" y="78" width="320" height="20" rx="3" fill="#2563eb"/>
+  <text x="525" y="93" font-size="11" font-weight="bold" fill="#2563eb">28.4%</text>
+
+  <!-- Bar 2 -->
+  <text x="180" y="124" font-size="12" font-weight="600" fill="#334155" text-anchor="end">log_impressions</text>
+  <rect x="195" y="110" width="249" height="20" rx="3" fill="#3b82f6"/>
+  <text x="454" y="125" font-size="11" font-weight="bold" fill="#3b82f6">22.1%</text>
+
+  <!-- Bar 3 -->
+  <text x="180" y="156" font-size="12" font-weight="600" fill="#334155" text-anchor="end">log_clicks</text>
+  <rect x="195" y="142" width="164" height="20" rx="3" fill="#60a5fa"/>
+  <text x="369" y="157" font-size="11" font-weight="bold" fill="#60a5fa">14.6%</text>
+
+  <!-- Bar 4 -->
+  <text x="180" y="188" font-size="12" font-weight="600" fill="#334155" text-anchor="end">days_active_pct</text>
+  <rect x="195" y="174" width="126" height="20" rx="3" fill="#93c5fd"/>
+  <text x="331" y="189" font-size="11" font-weight="bold" fill="#64748b">11.2%</text>
+
+  <!-- Bar 5 -->
+  <text x="180" y="220" font-size="12" font-weight="600" fill="#334155" text-anchor="end">content_age_days</text>
+  <rect x="195" y="206" width="92" height="20" rx="3" fill="#bfdbfe"/>
+  <text x="297" y="221" font-size="11" font-weight="bold" fill="#64748b">8.2%</text>
+
+  <!-- Bar 6 -->
+  <text x="180" y="252" font-size="12" font-weight="600" fill="#334155" text-anchor="end">position_gap_from_p1</text>
+  <rect x="195" y="238" width="73" height="20" rx="3" fill="#dbeafe"/>
+  <text x="278" y="253" font-size="11" font-weight="bold" fill="#64748b">6.5%</text>
+</svg>

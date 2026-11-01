@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Position-Adjusted Click Opportunity Scoring in Organic Search</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --emerald: #059669;
+      --amber: #d97706;
+      --rose: #e11d48;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+      color: var(--slate-800);
+      background-color: var(--slate-50);
+      padding: 0 1rem;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 2.5rem auto 5rem auto;
+      background: #ffffff;
+      padding: 3.5rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      border: 1px solid var(--slate-200);
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 2rem 1.25rem;
+        margin: 1rem auto;
+      }
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--slate-200);
+      padding-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--slate-900);
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    .meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem 2rem;
+      font-size: 0.9rem;
+      color: var(--slate-600);
+      margin-bottom: 1.25rem;
+    }
+
+    .meta-item strong {
+      color: var(--slate-900);
+    }
+
+    .links-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--slate-200);
+      transition: all 0.15s ease;
+    }
+
+    .btn-link:hover {
+      background: var(--slate-200);
+      color: var(--slate-900);
+    }
+
+    .abstract-box {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 2rem 0 3rem 0;
+    }
+
+    .abstract-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .abstract-text {
+      font-size: 1.05rem;
+      color: #1e3a8a;
+      line-height: 1.65;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      letter-spacing: -0.015em;
+      margin: 2.75rem 0 1rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--slate-800);
+      margin: 1.5rem 0 0.5rem 0;
+    }
+
+    p {
+      margin-bottom: 1.2rem;
+      font-size: 1.02rem;
+    }
+
+    ul, ol {
+      margin: 0.75rem 0 1.5rem 1.75rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .figure-container {
+      margin: 2.5rem 0;
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .figure-caption {
+      font-size: 0.88rem;
+      color: var(--slate-500);
+      margin-top: 0.75rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0 2rem 0;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      padding: 0.75rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    th {
+      background: var(--slate-100);
+      color: var(--slate-800);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th.num {
+      text-align: right;
+    }
+
+    tr:hover td {
+      background: var(--slate-50);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-primary { background: #dbeafe; color: #1e40af; }
+    .badge-success { background: #d1fae5; color: #065f46; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-slate   { background: #e2e8f0; color: #334155; }
+
+    .formula-card {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92rem;
+      color: var(--slate-800);
+      overflow-x: auto;
+    }
+
+    .callout {
+      padding: 1.25rem 1.5rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    .callout-info {
+      background: #f8fafc;
+      border: 1px solid var(--slate-200);
+      border-left: 4px solid var(--slate-600);
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-left: 4px solid var(--amber);
+      color: #78350f;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--slate-200);
+      font-size: 0.9rem;
+      color: var(--slate-500);
+      line-height: 1.6;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--slate-100);
+      padding: 0.15em 0.35em;
+      border-radius: 4px;
+      color: var(--slate-800);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Position-Adjusted Click Opportunity Scoring in Organic Search</h1>
+    <div class="meta-bar">
+      <div class="meta-item"><strong>Track:</strong> Applied Search Intelligence (Google Search Ranking &amp; Discoverability)</div>
+      <div class="meta-item"><strong>Program:</strong> FlyRank ML Internship 2026</div>
+      <div class="meta-item"><strong>Author:</strong> Research Fellow (Lane 4: CTR / Engagement Opportunity Scoring)</div>
+      <div class="meta-item"><strong>Date:</strong> November 2026</div>
+    </div>
+    <div class="links-strip">
+      <a class="btn-link" href="https://github.com/cb-bantong/FlyRank-ML-Program" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub Repository
+      </a>
+      <a class="btn-link" href="https://colab.research.google.com/github/cb-bantong/FlyRank-ML-Program/blob/main/work/notebooks/capstone.ipynb?flush_cache=true" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#f9ab00"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 4.5a7.5 7.5 0 110 15 7.5 7.5 0 010-15z"/></svg>
+        Run in Google Colab
+      </a>
+      <a class="btn-link" href="https://flyrank.ai/" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        FlyRank Dataset Provider
+      </a>
+    </div>
+  </header>
+
+  <!-- Section 1: Abstract -->
+  <section class="abstract-box">
+    <div class="abstract-title">Abstract</div>
+    <div class="abstract-text">
+      How can content teams with finite human review bandwidth systematically prioritize which high-exposure web pages to optimize for organic search click-through rate (CTR)? Analyzing an anonymized dataset of 30,000 content items across 32 client domains, we observe that search exposure is heavily right-skewed and CTR varies non-linearly with SERP position. We frame content optimization as an opportunity ranking task, developing a position-adjusted click deficit model evaluated under an out-of-domain client-holdout split. On unseen test client domains, our Random Forest opportunity model achieves a Precision@50 of 0.740 (a 1.95x lift over transparent baseline heuristic rules). These findings provide an operational decision-support triage queue for content copywriters to capture lost organic clicks while avoiding low-value manual review.
+    </div>
+  </section>
+
+  <!-- Section 2: Introduction -->
+  <section>
+    <h2>1. Introduction &amp; Problem Statement</h2>
+    <p>
+      In organic search discoverability, achieving a high rank on Google Search Console (GSC) is only the preliminary half of user acquisition. Business outcomes—sessions, conversions, and revenue—depend on searchers clicking through from the search engine results page (SERP). Across enterprise content repositories exceeding tens of thousands of URLs, dozens of pages rank prominently on Page 1 or striking distance yet capture an unexpectedly small fraction of search clicks due to uncompelling title tags, ambiguous meta descriptions, or mismatched query intent.
+    </p>
+    <p>
+      Human content strategy teams face a severe <strong>capacity constraint</strong>: an editorial team can realistically review and optimize between 20 and 50 URLs per week. A naive binary classification rule (such as <code>CTR &lt; 0.5%</code>) flags 18,614 visible URLs (84.6% of the portfolio), creating an unmanageable backlog.
+    </p>
+    <p>
+      This research formulates and validates an operational <strong>ranking and opportunity scoring system</strong>. Rather than predicting raw ranking shifts, we estimate the <em>recoverable click deficit</em> (the gap between observed CTR and expected CTR conditioned on position tier, weighted by impression volume). This triage mechanism directs editorial attention to the specific pages where snippet optimization generates the highest traffic recovery.
+    </p>
+  </section>
+
+  <!-- Section 3: Data -->
+  <section>
+    <h2>2. Dataset &amp; Data Contract</h2>
+    <p>
+      This study utilizes the <strong>FlyRank Anonymized Search Intelligence Starter Dataset</strong> (<code>content_refresh_anonymized.csv</code>). The unit of analysis is strictly:
+    </p>
+    <div class="formula-card">
+      Unit of Analysis = 1 row per unique pseudonymized content item (content_id) across 32 client groups (client_id)<br>
+      Total Records = 30,000 rows × 44 columns | Trailing 90-day observation window
+    </div>
+    <p>
+      <strong>Data Safety &amp; Privacy Protection:</strong> In compliance with the public-safety charter of this track, all client names, domains, URLs, page titles, and raw query strings were removed or pseudonymized via cryptographic hashing prior to release. The dataset comprises purely observable search console metrics, Google Analytics 4 session metrics, and content metadata.
+    </p>
+    <p>
+      <strong>Strict Feature Exclusions &amp; Leakage Guard:</strong>
+    </p>
+    <ul>
+      <li><code>ctr</code> itself is excluded from model feature inputs, as the proxy target is mathematically derived from CTR percentiles.</li>
+      <li><code>trend_direction</code> and <code>trend_pct</code> are excluded to prevent temporal target leakage.</li>
+      <li>Comparison sub-windows (<code>*_last_30d</code>, <code>*_prev_30d</code>) are excluded due to direct temporal overlap.</li>
+      <li>Internal FlyRank heuristic decision flags (e.g. <code>health_score</code>, <code>needs_ctr_fix</code>) were excluded upstream, ensuring our models discover empirical signal rather than memorizing pre-existing rules.</li>
+      <li>Hashed IDs (<code>content_id</code>, <code>client_id</code>) are restricted to joins and grouped validation splits.</li>
+    </ul>
+  </section>
+
+  <!-- Section 4: Methodology -->
+  <section>
+    <h2>3. Methodology</h2>
+    <p>
+      We filter the portfolio to visible inventory (<code>impressions_90d &ge; 100</code>, $N=22,006$) to suppress small-sample rate volatility.
+    </p>
+
+    <h3>3.1 Opportunity Target &amp; Proxy Label Formulation</h3>
+    <p>
+      We quantify underperformance continuously by calculating the <strong>Estimated Lost Clicks</strong> against peer position-tier benchmarks:
+    </p>
+    <div class="formula-card">
+      Expected CTR(tier) = Median CTR of visible pages within the page's position tier<br>
+      CTR Opportunity Gap = max(0, Expected CTR(tier) - Observed CTR)<br>
+      Estimated Lost Clicks = (CTR Opportunity Gap / 100) × impressions_90d
+    </div>
+    <p>
+      For formal discrimination evaluation and out-of-fold validation, we define a binary proxy label:
+      <code>is_underperforming_ctr = 1</code> if a page's CTR falls at or below the 25th percentile of its position tier (test base rate = 32.4%).
+    </p>
+
+    <h3>3.2 Transparent Heuristic Baseline</h3>
+    <p>
+      To establish an honest performance benchmark, we implemented a transparent hand-written score (0–100 scale) combining exposure volume, CTR deficit, and ranking leverage:
+    </p>
+    <div class="formula-card">
+      baseline_score = 0.40 × visibility_score + 0.35 × ctr_deficit_score + 0.25 × position_leverage_score
+    </div>
+
+    <h3>3.3 Model Toolkit &amp; Honest Grouped Validation</h3>
+    <p>
+      We evaluated three distinct machine learning architectures:
+    </p>
+    <ol>
+      <li><strong>Logistic Regression:</strong> L2-regularized linear baseline with standard scaling.</li>
+      <li><strong>Decision Tree:</strong> Depth-constrained tree (<code>max_depth=5</code>, <code>min_samples_leaf=50</code>).</li>
+      <li><strong>Random Forest:</strong> Non-linear ensemble (100 estimators, <code>max_depth=8</code>, <code>min_samples_leaf=25</code>).</li>
+    </ol>
+    <p>
+      <strong>Validation Design:</strong> We enforce an out-of-domain <strong>client-holdout split</strong>. 26 clients (17,495 rows) were allocated to training, while 6 clients (4,511 rows) were held out entirely. This design prevents client domain pattern memorization.
+    </p>
+  </section>
+
+  <!-- Section 5: Results -->
+  <section>
+    <h2>4. Empirical Results &amp; Model Comparison</h2>
+    <p>
+      All models and the baseline heuristic were evaluated on the identical holdout split ($N=4,511$ unseen items across 6 clients). Performance was evaluated on <strong>Precision@50</strong>, <strong>Precision@20</strong>, <strong>ROC-AUC</strong>, and <strong>Average Precision (PR-AUC)</strong>.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Model / Baseline</th>
+          <th class="num">ROC-AUC</th>
+          <th class="num">Avg Precision</th>
+          <th class="num">Precision@50</th>
+          <th class="num">Precision@20</th>
+          <th class="num">Lift vs. Baseline</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Random Forest (Ensemble)</strong></td>
+          <td class="num"><strong>0.748</strong></td>
+          <td class="num"><strong>0.624</strong></td>
+          <td class="num"><strong>0.740</strong></td>
+          <td class="num"><strong>0.800</strong></td>
+          <td class="num"><strong>1.95x</strong></td>
+        </tr>
+        <tr>
+          <td>Decision Tree</td>
+          <td class="num">0.718</td>
+          <td class="num">0.558</td>
+          <td class="num">0.580</td>
+          <td class="num">0.650</td>
+          <td class="num">1.53x</td>
+        </tr>
+        <tr>
+          <td>Logistic Regression</td>
+          <td class="num">0.692</td>
+          <td class="num">0.512</td>
+          <td class="num">0.520</td>
+          <td class="num">0.550</td>
+          <td class="num">1.37x</td>
+        </tr>
+        <tr>
+          <td>Baseline Rule (Heuristic)</td>
+          <td class="num">0.615</td>
+          <td class="num">0.446</td>
+          <td class="num">0.380</td>
+          <td class="num">0.450</td>
+          <td class="num">1.00x</td>
+        </tr>
+        <tr style="color: var(--slate-500); font-style: italic;">
+          <td>Base Rate (Random Selection)</td>
+          <td class="num">0.500</td>
+          <td class="num">0.324</td>
+          <td class="num">0.324</td>
+          <td class="num">0.324</td>
+          <td class="num">0.85x</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="figure-container">
+      <img src="figures/chart2_model_vs_baseline.svg" alt="Model vs Baseline Precision Comparison" width="100%">
+      <div class="figure-caption">Figure 1: Precision@50 and Precision@20 on unseen client holdout (N=4,511). Random Forest achieves 0.740 Precision@50, demonstrating a ~2x lift over the baseline rule.</div>
+    </div>
+
+    <h3>4.1 Signal Analysis &amp; Feature Importance</h3>
+    <p>
+      Inspection of Gini feature importances in the Random Forest model reveals that the algorithm relies primarily on continuous SERP dynamics:
+    </p>
+    <ul>
+      <li><code>avg_position</code> (28.4%): Position non-linearity governs expected click capture.</li>
+      <li><code>log_impressions</code> (22.1%): Weighting click deficit by exposure volume.</li>
+      <li><code>log_clicks</code> (14.6%): Quantifying observed conversion volume.</li>
+      <li><code>days_active_pct</code> (11.2%): Filtering out transient ranking spikes.</li>
+    </ul>
+
+    <div class="figure-container">
+      <img src="figures/chart1_ctr_by_position.svg" alt="Observed CTR by Position Tier" width="100%">
+      <div class="figure-caption">Figure 2: Observed CTR across SERP position tiers (N=22,006). Notice the sharp drop from Page 1 (0.23% median) to Page 3–5 (0.06% median).</div>
+    </div>
+
+    <div class="figure-container">
+      <img src="figures/chart3_feature_importance.svg" alt="Feature Importance Breakdown" width="100%">
+      <div class="figure-caption">Figure 3: Random Forest relative feature importance. Position and volume signals drive over 65% of predictive discrimination.</div>
+    </div>
+  </section>
+
+  <!-- Section 6: Limitations -->
+  <section>
+    <h2>5. Limitations &amp; Honest Framing</h2>
+    <p>
+      In adherence to scientific integrity and FlyRank claim standards, we explicitly delineate the boundaries of this work:
+    </p>
+    <div class="callout callout-warning">
+      <strong>Core Analytical Boundaries:</strong>
+      <ol>
+        <li><strong>Observational, Not Causal:</strong> This study is cross-sectional. We demonstrate an empirical association between snippet metadata and click capture. We cannot claim that updating title tags <em>causes</em> traffic recovery without a randomized controlled trial.</li>
+        <li><strong>Zero-Click SERP Layouts:</strong> On certain informational queries, Google displays featured answer boxes or AI Overviews, satisfying intent directly on the SERP. In such cases, depressed CTR reflects SERP layout changes rather than suboptimal copy.</li>
+        <li><strong>Google Algorithm Secrecy:</strong> We do not claim to reverse-engineer or forecast Google's proprietary search ranking algorithm. We model observable portfolio click capture under fixed ranking positions.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Section 7: Action Playbook -->
+  <section>
+    <h2>6. Ranked Recommendations &amp; Action Playbook</h2>
+    <p>
+      We blended the Random Forest probability with the transparent baseline rule to generate an operational queue across all 22,006 visible pages, mapping each URL to human-readable reason codes and concrete editorial playbooks.
+    </p>
+
+    <div class="figure-container">
+      <img src="figures/chart4_action_distribution.svg" alt="Action Playbook Distribution" width="100%">
+      <div class="figure-caption">Figure 4: Distribution of recommended editorial actions across the portfolio. 68.4% of URLs require passive monitoring, while 13.8% represent high-leverage title/meta rewriting opportunities.</div>
+    </div>
+
+    <h3>6.1 Action Playbooks</h3>
+    <ul>
+      <li><strong><code>rewrite_title_and_meta</code> (3,037 URLs, 13.8%):</strong> High Page 1 impressions with severe click leakage. Action: Rewrite title tag to include primary search intent, add emotional/curiosity hooks, and optimize character length to prevent snippet truncation.</li>
+      <li><strong><code>improve_serp_snippet_intent</code> (1,135 URLs, 5.2%):</strong> Striking distance URLs (ranks 11–20). Action: Add structured FAQ schema and concise summary answer headers to capture Google featured snippet blocks.</li>
+      <li><strong><code>on_page_engagement_review</code> (2,775 URLs, 12.6%):</strong> Low scroll/session read rates. Action: Add above-the-fold table of contents, internal navigation links, and interactive media.</li>
+      <li><strong><code>monitor_visibility</code> (15,059 URLs, 68.4%):</strong> Healthy or low-traffic inventory maintained under quarterly automated monitoring.</li>
+    </ul>
+
+    <h3>6.2 Top 5 High-Leverage Queue Candidates</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tier</th>
+          <th class="num">Avg Pos</th>
+          <th class="num">Impressions</th>
+          <th class="num">Clicks</th>
+          <th class="num">CTR</th>
+          <th>Action</th>
+          <th>Reason Codes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>content_36ff89c8214e</code></td>
+          <td><span class="badge badge-primary">page_1</span></td>
+          <td class="num">7.3</td>
+          <td class="num">295,097</td>
+          <td class="num">154</td>
+          <td class="num">0.05%</td>
+          <td><span class="badge badge-warning">rewrite_title_and_meta</span></td>
+          <td><code>page_one_click_leak; high_exposure</code></td>
+        </tr>
+        <tr>
+          <td><code>content_c8e9d6ab9013</code></td>
+          <td><span class="badge badge-primary">page_1</span></td>
+          <td class="num">9.7</td>
+          <td class="num">208,678</td>
+          <td class="num">0</td>
+          <td class="num">0.00%</td>
+          <td><span class="badge badge-warning">rewrite_title_and_meta</span></td>
+          <td><code>page_one_click_leak; zero_clicks</code></td>
+        </tr>
+        <tr>
+          <td><code>content_5fe46e04994d</code></td>
+          <td><span class="badge badge-primary">page_1</span></td>
+          <td class="num">4.2</td>
+          <td class="num">517,715</td>
+          <td class="num">714</td>
+          <td class="num">0.14%</td>
+          <td><span class="badge badge-warning">rewrite_title_and_meta</span></td>
+          <td><code>page_one_click_leak; high_exposure</code></td>
+        </tr>
+        <tr>
+          <td><code>content_c84a0ab98e90</code></td>
+          <td><span class="badge badge-primary">page_1</span></td>
+          <td class="num">7.8</td>
+          <td class="num">223,271</td>
+          <td class="num">71</td>
+          <td class="num">0.03%</td>
+          <td><span class="badge badge-warning">rewrite_title_and_meta</span></td>
+          <td><code>page_one_click_leak; high_exposure</code></td>
+        </tr>
+        <tr>
+          <td><code>content_8451fc6f034d</code></td>
+          <td><span class="badge badge-success">top_3</span></td>
+          <td class="num">2.3</td>
+          <td class="num">272,144</td>
+          <td class="num">76</td>
+          <td class="num">0.03%</td>
+          <td><span class="badge badge-warning">rewrite_title_and_meta</span></td>
+          <td><code>top_three_click_leak; high_exposure</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 8: Reproducibility -->
+  <section>
+    <h2>7. Reproducibility &amp; Artifact Index</h2>
+    <p>
+      All data, processing scripts, and experiment notebooks are fully open-source and reproducible from a fresh environment:
+    </p>
+    <ul>
+      <li><strong>Repository:</strong> <a href="https://github.com/cb-bantong/FlyRank-ML-Program" target="_blank">github.com/cb-bantong/FlyRank-ML-Program</a></li>
+      <li><strong>Weekly Notebooks:</strong> All weekly assignments (<code>w01</code> through <code>w07</code>) and the capstone notebook live under <code>work/notebooks/</code>.</li>
+      <li><strong>Random Seeds:</strong> <code>RANDOM_STATE = 42</code> across all data splits and random forest estimators.</li>
+      <li><strong>Environment:</strong> Python 3.10+, <code>pandas>=2.2</code>, <code>numpy>=1.26</code>, <code>scikit-learn>=1.4</code>.</li>
+    </ul>
+    <div class="formula-card">
+      # Execution commands<br>
+      git clone https://github.com/cb-bantong/FlyRank-ML-Program.git<br>
+      cd FlyRank-ML-Program<br>
+      pip install -r requirements.txt<br>
+      python scripts/run_all.py
+    </div>
+  </section>
+
+  <!-- Section 9: Acknowledgments & Data Credit -->
+  <footer>
+    <p>
+      <strong>Acknowledgments &amp; Data Credit:</strong><br>
+      This research was conducted as part of the FlyRank Machine Learning Internship (Applied Search Intelligence Track: Google Search Ranking &amp; Discoverability). Built on the <strong><a href="https://flyrank.ai/" target="_blank">FlyRank ML Internship dataset</a></strong>. All data is pseudonymized and governed under <a href="https://github.com/cb-bantong/FlyRank-ML-Program/blob/main/DATA_USE.md" target="_blank">DATA_USE.md</a>.
+    </p>
+    <p style="margin-top: 0.75rem;">
+      &copy; 2026 FlyRank Applied Search Intelligence Track. Deployed via GitHub Pages from <code>/docs</code>.
+    </p>
+  </footer>
+</div>
+
+</body>
+</html>

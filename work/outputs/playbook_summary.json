@@ -1,0 +1,18 @@
+{
+  "lane": "CTR / Engagement Opportunity Scoring",
+  "total_items_scored": 22006,
+  "high_confidence_items": 650,
+  "precision_at_50": 0.74,
+  "lift_over_baseline": 1.95,
+  "action_distribution": {
+    "monitor_visibility": 15059,
+    "rewrite_title_and_meta": 3037,
+    "on_page_engagement_review": 2775,
+    "improve_serp_snippet_intent": 1135
+  },
+  "confidence_distribution": {
+    "LOW": 16793,
+    "MEDIUM": 4563,
+    "HIGH": 650
+  }
+}

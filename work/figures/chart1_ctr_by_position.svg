@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 320" width="100%" height="auto" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <text x="30" y="35" font-size="18" font-weight="bold" fill="#1e293b">Observed Click-Through Rate (CTR) by Position Tier</text>
+  <text x="30" y="55" font-size="12" fill="#64748b">Median vs Mean CTR across 22,006 visible content items (impressions ≥ 100)</text>
+  
+  <line x1="120" y1="80" x2="600" y2="80" stroke="#f1f5f9" stroke-width="1"/>
+  <line x1="120" y1="125" x2="600" y2="125" stroke="#f1f5f9" stroke-width="1"/>
+  <line x1="120" y1="170" x2="600" y2="170" stroke="#f1f5f9" stroke-width="1"/>
+  <line x1="120" y1="215" x2="600" y2="215" stroke="#f1f5f9" stroke-width="1"/>
+  <line x1="120" y1="260" x2="600" y2="260" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- Y axis labels -->
+  <text x="105" y="84" font-size="11" fill="#94a3b8" text-anchor="end">0.40%</text>
+  <text x="105" y="129" font-size="11" fill="#94a3b8" text-anchor="end">0.30%</text>
+  <text x="105" y="174" font-size="11" fill="#94a3b8" text-anchor="end">0.20%</text>
+  <text x="105" y="219" font-size="11" fill="#94a3b8" text-anchor="end">0.10%</text>
+  <text x="105" y="264" font-size="11" fill="#94a3b8" text-anchor="end">0.00%</text>
+
+  <!-- Bars: top_3 (x=150), page_1 (x=245), striking (x=340), page_3_5 (x=435), deep (x=530) -->
+  <!-- top_3: med=0.19% (h=85.5, y=174.5), mean=0.33% (h=148.5, y=111.5) -->
+  <rect x="145" y="174" width="28" height="86" rx="3" fill="#2563eb" opacity="0.9"/>
+  <rect x="176" y="111" width="28" height="149" rx="3" fill="#93c5fd" opacity="0.8"/>
+  <text x="174" y="278" font-size="11" font-weight="600" fill="#334155" text-anchor="middle">Top 3</text>
+  <text x="159" y="168" font-size="10" font-weight="bold" fill="#2563eb" text-anchor="middle">0.19%</text>
+
+  <!-- page_1: med=0.23% (h=103.5, y=156.5), mean=0.35% (h=157.5, y=102.5) -->
+  <rect x="240" y="156" width="28" height="104" rx="3" fill="#2563eb" opacity="0.9"/>
+  <rect x="271" y="102" width="28" height="158" rx="3" fill="#93c5fd" opacity="0.8"/>
+  <text x="269" y="278" font-size="11" font-weight="600" fill="#334155" text-anchor="middle">Page 1</text>
+  <text x="254" y="150" font-size="10" font-weight="bold" fill="#2563eb" text-anchor="middle">0.23%</text>
+
+  <!-- striking: med=0.15% (h=67.5, y=192.5), mean=0.26% (h=117, y=143) -->
+  <rect x="335" y="192" width="28" height="68" rx="3" fill="#2563eb" opacity="0.9"/>
+  <rect x="366" y="143" width="28" height="117" rx="3" fill="#93c5fd" opacity="0.8"/>
+  <text x="364" y="278" font-size="11" font-weight="600" fill="#334155" text-anchor="middle">Striking</text>
+  <text x="349" y="186" font-size="10" font-weight="bold" fill="#2563eb" text-anchor="middle">0.15%</text>
+
+  <!-- page_3_5: med=0.06% (h=27, y=233), mean=0.14% (h=63, y=197) -->
+  <rect x="430" y="233" width="28" height="27" rx="3" fill="#2563eb" opacity="0.9"/>
+  <rect x="461" y="197" width="28" height="63" rx="3" fill="#93c5fd" opacity="0.8"/>
+  <text x="459" y="278" font-size="11" font-weight="600" fill="#334155" text-anchor="middle">Page 3–5</text>
+  <text x="444" y="227" font-size="10" font-weight="bold" fill="#2563eb" text-anchor="middle">0.06%</text>
+
+  <!-- deep: med=0.00% (h=1, y=259), mean=0.06% (h=27, y=233) -->
+  <rect x="525" y="258" width="28" height="2" rx="1" fill="#2563eb" opacity="0.9"/>
+  <rect x="556" y="233" width="28" height="27" rx="3" fill="#93c5fd" opacity="0.8"/>
+  <text x="554" y="278" font-size="11" font-weight="600" fill="#334155" text-anchor="middle">Deep</text>
+  <text x="539" y="252" font-size="10" font-weight="bold" fill="#2563eb" text-anchor="middle">0.00%</text>
+
+  <!-- Legend -->
+  <rect x="420" y="38" width="12" height="12" rx="2" fill="#2563eb"/>
+  <text x="438" y="48" font-size="11" fill="#475569">Median CTR</text>
+  <rect x="525" y="38" width="12" height="12" rx="2" fill="#93c5fd"/>
+  <text x="543" y="48" font-size="11" fill="#475569">Mean CTR</text>
+</svg>
